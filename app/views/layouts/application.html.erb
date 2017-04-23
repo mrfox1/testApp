@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Index</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+  <p id="notice"><%= notice %></p>
+  <nav>
+    <li>
+      <%= link_to 'To index', pages_index_path %>
+    </li>
+    <li class="nav">
+      <%= link_to 'To posts', posts_path %>
+    </li>
+    <li>
+      <%= link_to 'Registration', registration_path %>
+    </li>
+    <li>
+      <%= link_to 'Log In', sessions_login_path %>
+    </li>
+    <li>
+      <%= link_to 'Log Out', sessions_logout_path %>
+    </li>
+     </nav>
+    <%= current_user.name if current_user%>
+    <%= yield %>
+     </body>
+</html>
