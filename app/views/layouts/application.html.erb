@@ -10,24 +10,38 @@
 
   <body>
   <p id="notice"><%= notice %></p>
-  <nav>
-    <li>
-      <%= link_to 'To index', pages_index_path %>
-    </li>
-    <li class="nav">
-      <%= link_to 'To posts', posts_path %>
-    </li>
-    <li>
-      <%= link_to 'Registration', registration_path %>
-    </li>
-    <li>
-      <%= link_to 'Log In', sessions_login_path %>
-    </li>
-    <li>
-      <%= link_to 'Log Out', sessions_logout_path %>
-    </li>
-     </nav>
-    <%= current_user.name if current_user%>
-    <%= yield %>
-     </body>
+
+  <div class = "flex-container">
+    <div class = "menu">
+      <p>
+        <%= link_to 'To index', pages_index_path %>
+      </p>
+      <p class="nav">
+        <%= link_to 'To posts', posts_path %>
+      </p>
+      <%unless current_user%>
+        <p>
+          <%= link_to 'Registration', registration_path %>
+        </p>
+        <p>
+          <%= link_to 'Log In', sessions_login_path %>
+        </p>
+      <%else%>
+        <p>
+          <%= link_to 'Log Out', sessions_logout_path %>
+        </p>
+      <%end%>
+    </div>
+
+    <div class ="user_name">
+      <%= image_tag avatar_url(current_user) if current_user%>
+      <%= current_user.name if current_user%>
+    </div>
+
+    <div class = "inf">
+      <%= yield %>
+    </div>
+  </div>
+
+  </body>
 </html>

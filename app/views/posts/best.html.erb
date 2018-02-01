@@ -1,0 +1,28 @@
+<h1>Best Posts</h1>
+
+<table>
+
+  <thead>
+  <tr>
+    <th></th>
+    <th>Author</th>
+    <th>Title</th>
+    <th>Body</th>
+    <th colspan="3"></th>
+  </tr>
+  </thead>
+  <tbody>
+
+
+  <% @post.each do |post| %>
+    <tr>
+      <% @user = User.find(id = post.user_id)%>
+      <td><%= image_tag post.image_url(:thumb) unless post.image.blank? if post.image %></td>
+      <td><%= @user.name%></td>
+      <td><%= post.title %></td>
+      <td><%= post.body %></td>
+    </tr>
+
+  <% end %>
+  </tbody>
+</table>

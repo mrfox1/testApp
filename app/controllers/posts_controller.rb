@@ -4,7 +4,7 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
-    @posts = Post.all
+    @posts = Post.all.newest
   end
 
   # GET /posts/1
@@ -29,8 +29,8 @@ class PostsController < ApplicationController
   # POST /posts.json
   def create
     @post = Post.new(post_params)
-    @post.user_id = current_user.id
-      respond_to do |format|
+    @post.user = current_user
+    respond_to do |format|
         if @post.save
           format.html { redirect_to @post, notice: 'Post was successfully created.' }
           format.json { render :show, status: :created, location: @post }
@@ -65,7 +65,35 @@ class PostsController < ApplicationController
     end
   end
 
-  private
+  def like
+    if can_user_vote?
+      @post = Post.find(params[:id])
+      rating = Rating.new
+      rating.user = current_user
+      rating.post = @post
+      @post.rating = @post.rating.to_i + 1 unless user_author(@post.user)
+      rating.save
+      @post.save
+    end
+  end
+
+  def dislike
+    if can_user_vote?
+      @post = Post.find(params[:id])
+      rating = Rating.new
+      rating.user = current_user
+      rating.post = @post
+      @post.rating = @post.rating.to_i - 1 unless user_author(@post.user)
+      rating.save
+      @post.save
+    end
+  end
+
+  def best
+    @post = Post.all.where("rating >= '10'")
+  end
+
+   private
     # Use callbacks to share common setup or constraints between actions.
     def set_post
       @post = Post.find(params[:id])
@@ -73,6 +101,11 @@ class PostsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
-      params.require(:post).permit(:title, :body)
+      params.require(:post).permit(:title, :body, :image, :rating)
     end
-end
+
+    def can_user_vote?
+      @rated_by = Rating.where(user_id: current_user.id, post_id: params[:id])
+      @rated_by.blank?
+    end
+  end
