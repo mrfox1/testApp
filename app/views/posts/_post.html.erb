@@ -1,0 +1,13 @@
+<tr>
+  <% @user = User.find(id = post.user_id)%>
+  <td><%= image_tag post.image_url(:thumb) unless post.image.blank? if post.image %></td>
+  <td><%= @user.name%></td>
+  <td><%= post.title %></td>
+  <td><%= post.body %></td>
+  <td><%= link_to 'Show', post %></td>
+  <td><%= link_to 'Edit', edit_post_path(post) if user_author(post.user)%></td>
+  <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } if user_author(post.user)%></td>
+  <td><%= link_to 'Like',like_path(id: post), remote: true %></td>
+  <td><%= post.rating %></td>
+  <td><%= link_to 'Dislike', dislike_path(id: post), remote: true %> </td>
+</tr>
